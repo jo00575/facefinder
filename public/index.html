@@ -1,0 +1,137 @@
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Nwagon demo</title>
+	<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js'></script>
+	<script src="./columnChart.js"></script>
+	<script src="./lineChart.js"></script>
+	<script>
+		var app = angular.module('app', [])
+	</script>
+</head>
+<body ng-app='app'>
+	<div ng-controller='MyCtrl' class='container'>
+		<ul ng-repeat="face in faces" class="list-group-item">
+			<h2>현재 관람객: {{face.faceNum}}</h2>
+		</ul>
+	</div>
+
+	<h2>Column Chart</h2>
+	<div ng-controller='ColumnCtrl' class='container' id="chart71">
+		<script>
+			columnChart(function(Data){
+				var myConfig = {
+					type: "bar",
+					plotarea: {
+						adjustLayout: true
+					},
+					scaleX: {
+						label: {
+							text: "x: time | y: people"
+						},
+						labels: ["0분 후", "1분 후", "2분 후", "3분 후", "4분 후", "5분 후", "6분 후", "7분 후","8분 후","9분 후","10분 후"]
+					},
+					series: [{
+						values: Data
+					}]
+				};
+				zingchart.render({
+					id: 'chart71',
+					data: myConfig,
+					height: "100%",
+					width: "100%"
+				});
+			});
+		</script>
+	</div>
+
+	<h2>Line Chart</h2>
+	<div ng-controller='LineCtrl' id="chart8">
+		<script>
+			lineChart(function (stayData5,stayData10,stayData15,stayData20){
+				window.alert('5: '+stayData5);
+				window.alert('10: '+stayData10);
+				window.alert('15: '+stayData15);
+				window.alert('20: '+stayData20);
+				var myConfig = {
+					"type": "line",
+					"plotarea": {
+						"adjust-layout": true
+					},
+					"scale-x": {
+						"label": {
+							"text": "",
+						},
+						"labels": ["0분 후", "1분 후", "2분 후", "3분 후", "4분 후", "5분 후", "6분 후", "7분 후","8분 후","9분 후","10분 후"]
+					},
+					"series": [{
+						"values": stayData5
+					}, {
+						"values": stayData10
+					}, {
+						"values": stayData15
+					}, {
+						"values": stayData20
+					}]
+				};
+				zingchart.render({
+					id: 'chart8',
+					data: myConfig,
+					height: '100%',
+					width: '100%'
+				});
+			})
+		</script>
+	</div>
+
+	<h2>Donut Chart</h2>
+	<div id="chart_d"></div>
+	<script>
+		var myConfig = {
+			"type": "pie",
+			"plot": {
+				"value-box": {
+					"visible": true,
+					"placement": "out",
+					"text": "%t <br> Value: %v <br> Percentage: %npv%"
+				}
+			},
+			"series": [{
+				"values": [59],
+				"text": "1회 관람"
+			}, {
+				"values": [50],
+				"text": "2회 관람"
+			}, {
+				"values": [30],
+				"text": "3회 관람"
+			}, {
+				"values": [28],
+				"text": "4회 관람"
+			}, {
+				"values": [15],
+				"text": "5회 이상 관람"
+			}]
+		};
+
+		zingchart.render({
+			id: 'chart_d',
+			data: myConfig,
+			height: "100%",
+			width: "100%"
+		});
+	</script>
+	<script>
+		app.controller('MyCtrl', function ($scope, $http){
+			$http.get('/faces')
+			.success(function (number){
+				$scope.faces = number
+			})
+		})
+
+	</script>
+
+</body>
+</html>
