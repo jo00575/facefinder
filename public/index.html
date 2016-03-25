@@ -7,54 +7,40 @@
 	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js'></script>
 	<script src="./columnChart.js"></script>
 	<script src="./lineChart.js"></script>
+	<script src="./donutChart.js"></script>
 	<script>
 		var app = angular.module('app', [])
 	</script>
+	
 </head>
-<body ng-app='app'>
+<body ng-app='app' onload="nowDate()">
+
 	<div ng-controller='MyCtrl' class='container'>
+		<ul>
+			<h2 id='testh2'></h2>
+		</ul>
 		<ul ng-repeat="face in faces" class="list-group-item">
 			<h2>현재 관람객: {{face.faceNum}}</h2>
+		</ul>
+		<ul>
+			<h2>총 관람객: {{total.length}}</h2>
+		</ul>
+		<ul>
+			<h2>평균 주시시간: {{stayAvg}}초</h2>
 		</ul>
 	</div>
 
 	<h2>Column Chart</h2>
 	<div ng-controller='ColumnCtrl' class='container' id="chart71">
 		<script>
-			columnChart(function(Data){
-				var myConfig = {
-					type: "bar",
-					plotarea: {
-						adjustLayout: true
-					},
-					scaleX: {
-						label: {
-							text: "x: time | y: people"
-						},
-						labels: ["0분 후", "1분 후", "2분 후", "3분 후", "4분 후", "5분 후", "6분 후", "7분 후","8분 후","9분 후","10분 후"]
-					},
-					series: [{
-						values: Data
-					}]
-				};
-				zingchart.render({
-					id: 'chart71',
-					data: myConfig,
-					height: "100%",
-					width: "100%"
-				});
-			});
+		columnChartMake();
 		</script>
 	</div>
 
 	<h2>Line Chart</h2>
 	<div ng-controller='LineCtrl' id="chart8">
 		<script>
-			lineChart(function (stayData5,stayData10,stayData15,stayData20){
-				window.alert('5: '+stayData5);
-				window.alert('10: '+stayData10);
-				window.alert('15: '+stayData15);
-				window.alert('20: '+stayData20);
+			lineChart(function (stayData5,stayData10,stayData15,stayData20, dataLabel){
 				var myConfig = {
 					"type": "line",
 					"plotarea": {
@@ -64,7 +50,7 @@
 						"label": {
 							"text": "",
 						},
-						"labels": ["0분 후", "1분 후", "2분 후", "3분 후", "4분 후", "5분 후", "6분 후", "7분 후","8분 후","9분 후","10분 후"]
+						"labels": dataLabel
 					},
 					"series": [{
 						"values": stayData5
@@ -87,51 +73,81 @@
 	</div>
 
 	<h2>Donut Chart</h2>
-	<div id="chart_d"></div>
-	<script>
-		var myConfig = {
-			"type": "pie",
-			"plot": {
-				"value-box": {
-					"visible": true,
-					"placement": "out",
-					"text": "%t <br> Value: %v <br> Percentage: %npv%"
-				}
-			},
-			"series": [{
-				"values": [59],
-				"text": "1회 관람"
-			}, {
-				"values": [50],
-				"text": "2회 관람"
-			}, {
-				"values": [30],
-				"text": "3회 관람"
-			}, {
-				"values": [28],
-				"text": "4회 관람"
-			}, {
-				"values": [15],
-				"text": "5회 이상 관람"
-			}]
-		};
+	<div ng-controller='DonutCtrl' id="chart_d">
+		<script>
+		donutChart(function(visit1, visit2, visit3){
+				var myConfig = {
+					"type": "pie",
+					"plot": {
+						"value-box": {
+							"visible": true,
+							"placement": "out",
+							"text": "%t <br> Value: %v <br> Percentage: %npv%"
+						}
+					},
+					"series": [{
+						"values": visit1,
+						"text": "1회 관람"
+					}, {
+						"values": visit2,
+						"text": "2회 관람"
+					}, {
+						"values": visit3,
+						"text": "3회이상 관람"
+					}]
+				};
 
-		zingchart.render({
-			id: 'chart_d',
-			data: myConfig,
-			height: "100%",
-			width: "100%"
-		});
-	</script>
+				zingchart.render({
+					id: 'chart_d',
+					data: myConfig,
+					height: "100%",
+					width: "100%"
+				});
+			})
+		</script>
+	</div>
 	<script>
 		app.controller('MyCtrl', function ($scope, $http){
 			$http.get('/faces')
 			.success(function (number){
 				$scope.faces = number
 			})
+			$http.get('/totalPeople')
+			.success(function (number2){
+				$scope.total = number2
+				if(number2 > 0){
+					var sum = 0;
+					for(var i=0; i<number2.length; i++)
+						sum = number2[i].stayTime;
+					$scope.stayAvg = sum/number2.length;
+				}
+				else
+					$scope.stayAvg = 0;
+			})
 		})
-
 	</script>
-
+	<script>
+	function nowDate(){
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = today.getMonth()+1;
+		var date = today.getDate();
+		var dayArr = ["(Sun)","(Mon)","(Tue)","(Wen)","(Thu)","(Fri)","(Sat)"];
+		var day = today.getDay();
+		var hour = today.getHours();
+		var min = today.getMinutes();
+		//window.alert(day);
+		if(month < 10)
+			month = "0"+month;
+		if(date < 10)
+			date = "0"+date;
+		if(hour < 10)
+			hour = "0"+hour;
+		if(min < 10)
+			min = "0"+min;
+		document.getElementById('testh2').innerHTML = "현재시각: "+year+"-"+month+"-"+date+dayArr[day]+" "+hour+":"+min;
+		setTimeout(function(){nowDate()},60000);
+	}
+	</script>
 </body>
 </html>
