@@ -45,34 +45,34 @@ function columnChart(callback){
 				});
 			});
 
-			$http.get('/time/people/'+initMin+'/0')
+			$http.get('/time/people/'+initHour+'/'+initMin+'/0')
 			.success(function (people){
 				peopleData.push(people.length);
-				$http.get('/time/people/'+initMin+'/1')
+				$http.get('/time/people/'+initHour+'/'+initMin+'/1')
 				.success(function (people){
 					peopleData.push(people.length);
-					$http.get('/time/people/'+initMin+'/2')
+					$http.get('/time/people/'+initHour+'/'+initMin+'/2')
 					.success(function (people){
 						peopleData.push(people.length);
-						$http.get('/time/people/'+initMin+'/3')
+						$http.get('/time/people/'+initHour+'/'+initMin+'/3')
 						.success(function (people){
 							peopleData.push(people.length);
-							$http.get('/time/people/'+initMin+'/4')
+							$http.get('/time/people/'+initHour+'/'+initMin+'/4')
 							.success(function (people){
 								peopleData.push(people.length);
-								$http.get('/time/people/'+initMin+'/5')
+								$http.get('/time/people/'+initHour+'/'+initMin+'/5')
 								.success(function (people){
 									peopleData.push(people.length);
-									$http.get('/time/people/'+initMin+'/6')
+									$http.get('/time/people/'+initHour+'/'+initMin+'/6')
 									.success(function (people){
 										peopleData.push(people.length);
-										$http.get('/time/people/'+initMin+'/7')
+										$http.get('/time/people/'+initHour+'/'+initMin+'/7')
 										.success(function (people){
 											peopleData.push(people.length);
-											$http.get('/time/people/'+initMin+'/8')
+											$http.get('/time/people/'+initHour+'/'+initMin+'/8')
 											.success(function (people){
 												peopleData.push(people.length);
-												$http.get('/time/people/'+initMin+'/9')
+												$http.get('/time/people/'+initHour+'/'+initMin+'/9')
 												.success(function (people){
 													peopleData.push(people.length);
 													callback(peopleData, labels);
@@ -97,31 +97,9 @@ function stringMake(hour, min, num, callback){
 		callback(data);
 	}
 	else{
+		if(temp < 10)
+			temp = '0'+temp;
 		var data = hour + ':' + temp;
 		callback(data);
 	}
-}
-
-function columnChartMake(){
-	columnChart(function(Data, dataLabel){
-//		window.alert('columnChart function');
-		var myConfig = {
-			
-			type: "bar",
-			width: "100%", height: "100%",
-			x: "2%", y: "2%",
-			scaleX: {
-				labels: dataLabel
-			},
-			series: [{
-				values: Data
-			}]
-		};
-		zingchart.render({
-			id: 'chart71',
-			data: myConfig,
-			height: 300,
-			width: 1600
-		});
-	});
 }

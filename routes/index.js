@@ -11,7 +11,7 @@ router.get('/faces', function(req, res, next){
 	.sort('-time')
 	.limit(1)
 	.exec(function(err, faces){
-		if (err) { return next(err); }
+		if (err) { console.log(err);return next(err); }
 		res.json(faces);
 	})
 });
@@ -23,8 +23,7 @@ router.get('/totalPeople', function(req, res, next){
 	.exec(function(err, min) {
 		var today = new Date();
 		var day = today.getDate();
-		var hour = today.getHours();
-		Time.find({'minute': min.minute, 'hour': hour, 'day': day})
+		Time.find({'initialMinute': min[0].minute, 'initialHour': min[0].hour, 'day': day})
 		.exec(function(err, records){
 			if (err) { return next(err); }
 			res.json(records);
@@ -50,37 +49,43 @@ router.get('/initialTime', function(req, res, next){
 	});
 });
 
-router.get('/time/people/:min/:seq', function(req, res, next){
-	var min = Number(req.params.min)+Number(req.params.seq);
+router.get('/time/people/:hour/:min/:seq', function(req, res, next){
+	var initialMin = req.params.min;
+	var min = Number(initialMin)+Number(req.params.seq);
+	if(min>=60)
+		min-=60;
 	var today = new Date();
 	var day = today.getDate();
-	var hour = today.getHours();
-	Time.find({'minute': min, 'hour': hour, 'day': day})
+	var hour = req.params.hour;
+	Time.find({'minute': min, 'initialMinute':initialMin, 'initialHour': hour, 'day': day})
 	.exec(function(err, records){
 		if (err) { return next(err); }
 		res.json(records);
 	})
 });
 
-router.get('/time/stay/:min/:seq', function(req, res, next){
-	var min = Number(req.params.min)+Number(req.params.seq);
+router.get('/time/stay/:hour/:min/:seq', function(req, res, next){
+	var initialMin = req.params.min;
+	var min = Number(initialMin)+Number(req.params.seq);
+	if(min>=60)
+		min-=60;
 	var today = new Date();
 	var day = today.getDate();
-	var hour = today.getHours();
+	var hour = req.params.hour;
 	var jsonData = {};
-	Time.find({'minute': min, 'hour': hour, 'day': day, 'stayTime': {"$lte": 5, "$gt": 0}})
+	Time.find({'minute': min, 'initialMinute':initialMin, 'initialHour': hour, 'day': day, 'stayTime': {"$lte": 5, "$gt": 0}})
 	.exec(function(err, records){
 		if (err) { return next(err); }
 		jsonData.data5 = records.length;
-		Time.find({'minute': min, 'hour': hour, 'day': day, 'stayTime': {"$lte": 10, "$gt": 15}})
+		Time.find({'minute': min, 'initialMinute':initialMin, 'initialHour': hour, 'day': day, 'stayTime': {"$lte": 10, "$gt": 5}})
 		.exec(function(err, records){
 			if (err) { return next(err); }
 			jsonData.data10 = records.length;
-			Time.find({'minute': min, 'hour': hour, 'day': day, 'stayTime': {"$lte": 15, "$gt": 10}})
+			Time.find({'minute': min, 'initialMinute':initialMin, 'initialHour': hour, 'day': day, 'stayTime': {"$lte": 15, "$gt": 10}})
 			.exec(function(err, records){
 				if (err) { return next(err); }
 				jsonData.data15 = records.length;
-				Time.find({'minute': min, 'hour': hour, 'day': day, 'stayTime': {"$gte": 15}})
+				Time.find({'minute': min, 'initialMinute':initialMin, 'initialHour': hour, 'day': day, 'stayTime': {"$gt": 15}})
 				.exec(function(err, records){
 					if (err) { return next(err); }
 					jsonData.data20 = records.length;

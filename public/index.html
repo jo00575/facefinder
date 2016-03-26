@@ -18,10 +18,15 @@
 		<font color="#ffffff" face="Ebrima" size="25px">Face Finder </font>
 		<img src="./camera.png" width="45px" height="45px"></img>
 	</center>
-
+	<br><br>
+<center>
+<table>
+<tbody>
+<tr>
+<td>
 <img id="streamimage" class="xform" src="http://192.168.0.38:8080/?action=stream" />
-
-	<div ng-controller='MyCtrl' class='container'>
+</td>
+<td ng-controller='MyCtrl' class='container'>
 		<ul>
 			<font color="#ffffff" face="Ebrima"><h1 id='testh1'></h1></font>
 		</ul>
@@ -34,8 +39,12 @@
 			<ul>
 				<h1><font color="#ffffff" face="Ebrima">Average Staying Time : {{stayAvg}} sec</font></h1>
 			</ul>
-		</div>
-
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<br><br>
 		<div ng-controller='ColumnCtrl' class='container' id="chart71">
 			<script>
 				columnChart(function(Data, dataLabel){
@@ -43,7 +52,7 @@
 						"background-color": "#454754",
 						"type": "bar",
 						"width": "100%", "height": "100%",
-						"x": "2%", "y": "2%",
+						"x": "6%", "y": "2%",
 						"title": {
 							"y": "10px",
 							"text-align": "center",
@@ -93,11 +102,12 @@
 						"id": 'chart71',
 						"data": myConfig,
 						"height": 300,
-						"width": 1600
+						"width": 1660
 					});
 				});
 			</script>
 		</div>
+		<center>
 		<table>
 			<tbody>
 				<tr>
@@ -169,7 +179,7 @@
         			},
         			"series": [{
         				"values": stayData5,
-        				"text": "5초 이하",
+        				"text": "0초 ~ 5초",
         				"line-color":"#a6cee3",
         				"marker":{
         					"background-color":"#a6cee3",
@@ -177,7 +187,7 @@
         				}
         			}, {
         				"values": stayData10,
-        				"text": "10초 이하",
+        				"text": "5초 ~ 10초",
         				"line-color":"#1f78b4",
         				"marker":{
         					"background-color":"#1f78b4",
@@ -185,7 +195,7 @@
         				}
         			}, {
         				"values": stayData15,
-        				"text": "15초 이하",
+        				"text": "10초 ~ 15초",
         				"line-color":"#b2df8a",
         				"marker":{
         					"background-color":"#b2df8a",
@@ -193,7 +203,7 @@
         				}
         			}, {
         				"values": stayData20,
-        				"text": "15초 이상",
+        				"text": "15초 ~",
         				"line-color":"#33a02c",
         				"marker":{
         					"background-color":"#33a02c",
@@ -274,11 +284,11 @@
 		$http.get('/totalPeople')
 		.success(function (number2){
 			$scope.total = number2
-			if(number2 > 0){
+			if(number2.length > 0){
 				var sum = 0;
 				for(var i=0; i<number2.length; i++)
-					sum = number2[i].stayTime;
-				$scope.stayAvg = sum/number2.length;
+					sum += number2[i].stayTime;
+				$scope.stayAvg = (sum/number2.length).toFixed(1);
 			}
 			else
 				$scope.stayAvg = 0;

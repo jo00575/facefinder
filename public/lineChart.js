@@ -46,61 +46,61 @@ function lineChart(callback){
 					});
 				});
 			});
-			$http.get('/time/stay/'+initMin+'/0')
+			$http.get('/time/stay/'+initHour+'/'+initMin+'/0')
 			.success(function (record){
 				people5.push(record.data5);
 				people10.push(record.data10);
 				people15.push(record.data15);
 				people20.push(record.data20);
-				$http.get('/time/stay/'+initMin+'/1')
+				$http.get('/time/stay/'+initHour+'/'+initMin+'/1')
 				.success(function (record){
 					people5.push(record.data5);
 					people10.push(record.data10);
 					people15.push(record.data15);
 					people20.push(record.data20);
-					$http.get('/time/stay/'+initMin+'/2')
+					$http.get('/time/stay/'+initHour+'/'+initMin+'/2')
 					.success(function (record){
 						people5.push(record.data5);
 						people10.push(record.data10);
 						people15.push(record.data15);
 						people20.push(record.data20);
-						$http.get('/time/stay/'+initMin+'/3')
+						$http.get('/time/stay/'+initHour+'/'+initMin+'/3')
 						.success(function (record){
 							people5.push(record.data5);
 							people10.push(record.data10);
 							people15.push(record.data15);
 							people20.push(record.data20);
-							$http.get('/time/stay/'+initMin+'/4')
+							$http.get('/time/stay/'+initHour+'/'+initMin+'/4')
 							.success(function (record){
 								people5.push(record.data5);
 								people10.push(record.data10);
 								people15.push(record.data15);
 								people20.push(record.data20);
-								$http.get('/time/stay/'+initMin+'/5')
+								$http.get('/time/stay/'+initHour+'/'+initMin+'/5')
 								.success(function (record){
 									people5.push(record.data5);
 									people10.push(record.data10);
 									people15.push(record.data15);
 									people20.push(record.data20);
-									$http.get('/time/stay/'+initMin+'/6')
+									$http.get('/time/stay/'+initHour+'/'+initMin+'/6')
 									.success(function (record){
 										people5.push(record.data5);
 										people10.push(record.data10);
 										people15.push(record.data15);
 										people20.push(record.data20);
-										$http.get('/time/stay/'+initMin+'/7')
+										$http.get('/time/stay/'+initHour+'/'+initMin+'/7')
 										.success(function (record){
 											people5.push(record.data5);
 											people10.push(record.data10);
 											people15.push(record.data15);
 											people20.push(record.data20);
-											$http.get('/time/stay/'+initMin+'/8')
+											$http.get('/time/stay/'+initHour+'/'+initMin+'/8')
 											.success(function (record){
 												people5.push(record.data5);
 												people10.push(record.data10);
 												people15.push(record.data15);
 												people20.push(record.data20);
-												$http.get('/time/stay/'+initMin+'/9')
+												$http.get('/time/stay/'+initHour+'/'+initMin+'/9')
 												.success(function (record){
 													people5.push(record.data5);
 													people10.push(record.data10);
@@ -128,6 +128,8 @@ function stringMake(hour, min, num, callback){
 		callback(data);
 	}
 	else{
+		if(temp < 10)
+			temp = '0'+temp;
 		var data = hour + ':' + temp;
 		callback(data);
 	}
