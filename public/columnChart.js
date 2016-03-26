@@ -104,16 +104,13 @@ function stringMake(hour, min, num, callback){
 
 function columnChartMake(){
 	columnChart(function(Data, dataLabel){
-		window.alert('columnChart function');
+//		window.alert('columnChart function');
 		var myConfig = {
+			
 			type: "bar",
-			plotarea: {
-				adjustLayout: true
-			},
+			width: "100%", height: "100%",
+			x: "2%", y: "2%",
 			scaleX: {
-				label: {
-					text: "x: time | y: people"
-				},
 				labels: dataLabel
 			},
 			series: [{
@@ -123,8 +120,8 @@ function columnChartMake(){
 		zingchart.render({
 			id: 'chart71',
 			data: myConfig,
-			height: "100%",
-			width: "100%"
+			height: 300,
+			width: 1600
 		});
 	});
 }
