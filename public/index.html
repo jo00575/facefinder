@@ -14,39 +14,48 @@
 	
 </head>
 <body ng-app='app' onload="nowDate()" bgcolor="#454754">
+
 	<center>
 		<font color="#ffffff" face="Ebrima" size="25px">Face Finder </font>
 		<img src="./camera.png" width="45px" height="45px"></img>
 	</center>
 	<br><br>
-<center>
-<table>
-<tbody>
-<tr>
-<td>
-<img id="streamimage" class="xform" src="http://192.168.0.38:8080/?action=stream" />
-</td>
-<td ng-controller='MyCtrl' class='container'>
-		<ul>
-			<font color="#ffffff" face="Ebrima"><h1 id='testh1'></h1></font>
-		</ul>
-		<ul ng-repeat="face in faces" class="list-group-item">
-			<h1><font color="#ffffff" face="Ebrima">Current # of visitor : {{face.faceNum}}</font></h1>
-		</ul>
-		<ul>
-			<h1><font color="#ffffff" face="Ebrima">Total Visitor : {{total.length}}</font><h1>
-			</ul>
-			<ul>
-				<h1><font color="#ffffff" face="Ebrima">Average Staying Time : {{stayAvg}} sec</font></h1>
-			</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</center>
-<br><br>
+	<center>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<img id="streamimage" class="xform" src="http://192.168.0.38:8080/?action=stream" />
+					</td>
+					<td ng-controller='MyCtrl' class='container'>
+						<ul>
+							<font color="#ffffff" face="Ebrima"><h1 id='testh1'></h1></font>
+						</ul>
+						<ul ng-repeat="face in faces" class="list-group-item">
+							<h1><font color="#ffffff" face="Ebrima">Current # of visitor : {{face.faceNum}}</font></h1>
+						</ul>
+						<ul>
+							<h1><font color="#ffffff" face="Ebrima">Total Visitor : {{total.length}}</font><h1>
+							</ul>
+							<ul>
+								<h1><font color="#ffffff" face="Ebrima">Average Staying Time : {{stayAvg}} sec</font></h1>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+		<br><br>
 		<div ng-controller='ColumnCtrl' class='container' id="chart71">
 			<script>
+				var myConfig = {};
+				
+				zingchart.render({
+					"id": 'chart71',
+					"data": myConfig,
+					"height": 300,
+					"width": 1660
+				});
 				columnChart(function(Data, dataLabel){
 					var myConfig = {
 						"background-color": "#454754",
@@ -98,44 +107,41 @@
 							"background-color": "#A0BAED"
 						}]
 					};
-					zingchart.render({
-						"id": 'chart71',
-						"data": myConfig,
-						"height": 300,
-						"width": 1660
+					zingchart.exec('chart71', 'setdata', {
+						data : myConfig
 					});
 				});
 			</script>
 		</div>
 		<center>
-		<table>
-			<tbody>
-				<tr>
-					<td ng-controller='LineCtrl' id="chart8">
-						<script>
-							lineChart(function (stayData5,stayData10,stayData15,stayData20, dataLabel){
-								var myConfig = {
-									"background-color": "#454754",
-									"type": "line",
-									"width": "90%",
-									"height":"100%",
-									"x":"6%",
-									"y":"2%",
-									"title": {
-										"y": "10px",
-										"text-align": "center",
-										"background-color": "none",
-										"text": "Staying  Time",
-										"font-weight": "bold",
-										"font-family": "Ebrima",
-										"font-color": "#ffffff",
-										"font-size": "35px",
-										"height": "40px"
-									},
-									"plotarea":{
-										"margin":"22% 19% 10% 4%"
-									},
-									"legend":{
+			<table>
+				<tbody>
+					<tr>
+						<td ng-controller='LineCtrl' id="chart8">
+							<script>
+								lineChart(function (stayData5,stayData10,stayData15,stayData20, dataLabel){
+									var myConfig = {
+										"background-color": "#454754",
+										"type": "line",
+										"width": "90%",
+										"height":"100%",
+										"x":"6%",
+										"y":"2%",
+										"title": {
+											"y": "10px",
+											"text-align": "center",
+											"background-color": "none",
+											"text": "Staying  Time",
+											"font-weight": "bold",
+											"font-family": "Ebrima",
+											"font-color": "#ffffff",
+											"font-size": "35px",
+											"height": "40px"
+										},
+										"plotarea":{
+											"margin":"22% 19% 10% 4%"
+										},
+										"legend":{
         								//"layout":"x1",
         								"margin-top": "20%",
         								"border-width":"0",
@@ -152,159 +158,161 @@
         								},
         								"toggle-action":"remove"
         							},
-        			"scale-x": {
-        				"line-color": "#ffffff",
-        				"labels": dataLabel,
-        				"item": {
-        					"font-color": "#ffffff",
-        					"font-size": "14px"
-        				}
-        			},
-        			"scale-y": {
-        				"line-color": "#ffffff",
-        				"guide": {
-        					"line-color": "#ffffff"
-        				},
-        				"label": {
-        					"text": "관람자 수 (명)",
-        					"font-size": "15px",
-        					"font-color": "#ffffff",
-        					"font-family": "Arial",
-        					"font-weight": "normal"
-        				},
-        				"item": {
-        					"font-color": "#ffffff",
-        					"font-size": "14px"
-        				}
-        			},
-        			"series": [{
-        				"values": stayData5,
-        				"text": "0초 ~ 5초",
-        				"line-color":"#a6cee3",
-        				"marker":{
-        					"background-color":"#a6cee3",
-        					"border-color":"#a6cee3"
-        				}
-        			}, {
-        				"values": stayData10,
-        				"text": "5초 ~ 10초",
-        				"line-color":"#1f78b4",
-        				"marker":{
-        					"background-color":"#1f78b4",
-        					"border-color":"#1f78b4"
-        				}
-        			}, {
-        				"values": stayData15,
-        				"text": "10초 ~ 15초",
-        				"line-color":"#b2df8a",
-        				"marker":{
-        					"background-color":"#b2df8a",
-        					"border-color":"#b2df8a"
-        				}
-        			}, {
-        				"values": stayData20,
-        				"text": "15초 ~",
-        				"line-color":"#33a02c",
-        				"marker":{
-        					"background-color":"#33a02c",
-        					"border-color":"#33a02c"
-        				}
-        			}]
-        		};
-        		zingchart.render({
-        			"id": 'chart8',
-        			"data": myConfig,
-        			"height": 300,
-        			"width": 850
-        		});
+        							"scale-x": {
+        								"line-color": "#ffffff",
+        								"labels": dataLabel,
+        								"item": {
+        									"font-color": "#ffffff",
+        									"font-size": "14px"
+        								}
+        							},
+        							"scale-y": {
+        								"line-color": "#ffffff",
+        								"guide": {
+        									"line-color": "#ffffff"
+        								},
+        								"label": {
+        									"text": "관람자 수 (명)",
+        									"font-size": "15px",
+        									"font-color": "#ffffff",
+        									"font-family": "Arial",
+        									"font-weight": "normal"
+        								},
+        								"item": {
+        									"font-color": "#ffffff",
+        									"font-size": "14px"
+        								}
+        							},
+        							"series": [{
+        								"values": stayData5,
+        								"text": "0초 ~ 5초",
+        								"line-color":"#a6cee3",
+        								"marker":{
+        									"background-color":"#a6cee3",
+        									"border-color":"#a6cee3"
+        								}
+        							}, {
+        								"values": stayData10,
+        								"text": "5초 ~ 10초",
+        								"line-color":"#1f78b4",
+        								"marker":{
+        									"background-color":"#1f78b4",
+        									"border-color":"#1f78b4"
+        								}
+        							}, {
+        								"values": stayData15,
+        								"text": "10초 ~ 15초",
+        								"line-color":"#b2df8a",
+        								"marker":{
+        									"background-color":"#b2df8a",
+        									"border-color":"#b2df8a"
+        								}
+        							}, {
+        								"values": stayData20,
+        								"text": "15초 ~",
+        								"line-color":"#33a02c",
+        								"marker":{
+        									"background-color":"#33a02c",
+        									"border-color":"#33a02c"
+        								}
+        							}]
+        						};
+        						zingchart.render({
+        							"id": 'chart8',
+        							"data": myConfig,
+        							"height": 300,
+        							"width": 850
+        						});
+        					})
+        				</script>
+        			</td>
+
+        			<td ng-controller='DonutCtrl' id="chart_d">
+        				<script>
+        					donutChart(function(visit1, visit2, visit3){
+        						var myConfig = {
+        							"background-color": "#454754",
+        							"type": "pie",
+        							"width": "90%",
+        							"height": "90%",
+        							"x":"2%",
+        							"y":"2%",
+        							"title": {
+        								"text-align": "center",
+        								"background-color": "none",
+        								"text": "Visiting  Count",
+        								"font-weight": "bold",
+        								"font-family": "Ebrima",
+        								"font-color": "#ffffff",
+        								"font-size": "35px",
+        								"height": "40px",
+        								"margin-top": "20%"
+        							},
+        							"plotarea": {"margin": "20% 0% 0% 0%"},
+        							"plot": {
+        								"value-box": {
+        									"visible": true,
+        									"placement": "out",
+        									"text": "%t <br> Value: %v <br> Percentage: %npv%"
+        								}
+        							},
+        							"series": [{
+        								"values": visit1,
+        								"text": "1회 관람"
+        							}, {
+        								"values": visit2,
+        								"text": "2회 관람"
+        							}, {
+        								"values": visit3,
+        								"text": "3회이상 관람"
+        							}]
+        						};
+
+        						zingchart.render({
+        							"id": 'chart_d',
+        							"data": myConfig,
+        							"height": 500,
+        							"width": 800
+        						});
+        					})
+        				</script>
+        			</td>
+        		</tr>
+        	</tbody>
+        </table>
+
+        <script>
+        	app.controller('MyCtrl', function ($scope, $http, $interval){
+        		$interval(function(){
+        		$http.get('/faces')
+        		.success(function (number){
+        			$scope.faces = number
+        		})
+        		$http.get('/totalPeople')
+        		.success(function (number2){
+        			$scope.total = number2
+        			if(number2.length > 0){
+        				var sum = 0;
+        				for(var i=0; i<number2.length; i++)
+        					sum += number2[i].stayTime;
+        				$scope.stayAvg = (sum/number2.length).toFixed(1);
+        			}
+        			else
+        				$scope.stayAvg = 0;
+        		})
+        	},1000)
         	})
         </script>
-    </td>
-
-    <td ng-controller='DonutCtrl' id="chart_d">
-    	<script>
-    		donutChart(function(visit1, visit2, visit3){
-    			var myConfig = {
-    				"background-color": "#454754",
-    				"type": "pie",
-    				"width": "90%",
-    				"height": "90%",
-    				"x":"2%",
-    				"y":"2%",
-    				"title": {
-    					"text-align": "center",
-    					"background-color": "none",
-    					"text": "Visiting  Count",
-    					"font-weight": "bold",
-    					"font-family": "Ebrima",
-    					"font-color": "#ffffff",
-    					"font-size": "35px",
-    					"height": "40px",
-    					"margin-top": "20%"
-    				},
-    				"plotarea": {"margin": "20% 0% 0% 0%"},
-    				"plot": {
-    					"value-box": {
-    						"visible": true,
-    						"placement": "out",
-    						"text": "%t <br> Value: %v <br> Percentage: %npv%"
-    					}
-    				},
-    				"series": [{
-    					"values": visit1,
-    					"text": "1회 관람"
-    				}, {
-    					"values": visit2,
-    					"text": "2회 관람"
-    				}, {
-    					"values": visit3,
-    					"text": "3회이상 관람"
-    				}]
-    			};
-
-    			zingchart.render({
-    				"id": 'chart_d',
-    				"data": myConfig,
-    				"height": 500,
-    				"width": 800
-    			});
-    		})
-    	</script>
-    </td>
-</tr>
-</tbody>
-</table>
-
-<script>
-	app.controller('MyCtrl', function ($scope, $http){
-		$http.get('/faces')
-		.success(function (number){
-			$scope.faces = number
-		})
-		$http.get('/totalPeople')
-		.success(function (number2){
-			$scope.total = number2
-			if(number2.length > 0){
-				var sum = 0;
-				for(var i=0; i<number2.length; i++)
-					sum += number2[i].stayTime;
-				$scope.stayAvg = (sum/number2.length).toFixed(1);
-			}
-			else
-				$scope.stayAvg = 0;
-		})
-	})
-</script>
-<script>
-	function nowDate(){
-		var today = new Date();
-		var year = today.getFullYear();
-		var month = today.getMonth()+1;
-		var date = today.getDate();
-		var dayArr = ["(Sun)","(Mon)","(Tue)","(Wen)","(Thu)","(Fri)","(Sat)"];
-		var day = today.getDay();
-		var hour = today.getHours();
-		var min = today.getMinutes();
+        <script>
+        	function nowDate(){
+        		var today = new Date();
+        		var year = today.getFullYear();
+        		var month = today.getMonth()+1;
+        		var date = today.getDate();
+        		var dayArr = ["(Sun)","(Mon)","(Tue)","(Wen)","(Thu)","(Fri)","(Sat)"];
+        		var day = today.getDay();
+        		var hour = today.getHours();
+        		var min = today.getMinutes();
 		//window.alert(day);
 		if(month < 10)
 			month = "0"+month;

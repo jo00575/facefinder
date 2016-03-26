@@ -44,7 +44,8 @@ function columnChart(callback){
 					});
 				});
 			});
-
+setInterval(function(){
+	peopleData=[];
 			$http.get('/time/people/'+initHour+'/'+initMin+'/0')
 			.success(function (people){
 				peopleData.push(people.length);
@@ -86,6 +87,7 @@ function columnChart(callback){
 					});
 				});
 			});
+		},500);
 		});
 	});
 }
