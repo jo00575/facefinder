@@ -11,17 +11,24 @@
 	<script>
 		var app = angular.module('app', [])
 	</script>
-	
+	<style type="text/css">
+		.logo {
+			margin: 0px 200px 0px 800px;
+		}
+		.streamimage {
+			margin: 0px 60px 0px 430px;
+		}
+		#container {width:1660px;margin:auto;}
+	</style>
 </head>
 <body ng-app='app' onload="nowDate()" bgcolor="#454754">
-
-	<center>
-		<font color="#ffffff" face="Ebrima" size="25px">Face Finder </font>
-		<img src="./camera.png" width="45px" height="45px"></img>
-	</center>
+<div id="container">
+<div class="logo">
+		<b><font color="#ffffff" face="Ebrima" size="25px" position="fixed">FaceFinder </font></b>
+		<img src="./camera.png" width="45px" height="45px" position="fixed"></img>
 	<br><br>
-	<center>
-		<table>
+</div>
+		<table class="streamimage">
 			<tbody>
 				<tr>
 					<td>
@@ -44,8 +51,7 @@
 					</tr>
 				</tbody>
 			</table>
-		</center>
-		<br><br>
+		<br>
 		<div ng-controller='ColumnCtrl' class='container' id="chart71">
 			<script>
 				var myConfig = {};
@@ -57,7 +63,7 @@
 					"width": 1660
 				});
 				columnChart(function(Data, dataLabel){
-					var myConfig = {
+					myConfig = {
 						"background-color": "#454754",
 						"type": "bar",
 						"width": "100%", "height": "100%",
@@ -119,8 +125,16 @@
 					<tr>
 						<td ng-controller='LineCtrl' id="chart8">
 							<script>
+								var myConfig2 = {};
+								zingchart.render({
+									"id": 'chart8',
+									"data": myConfig2,
+									"height": 300,
+									"width": 850
+								});
+
 								lineChart(function (stayData5,stayData10,stayData15,stayData20, dataLabel){
-									var myConfig = {
+									myConfig2 = {
 										"background-color": "#454754",
 										"type": "line",
 										"width": "90%",
@@ -217,11 +231,8 @@
         								}
         							}]
         						};
-        						zingchart.render({
-        							"id": 'chart8',
-        							"data": myConfig,
-        							"height": 300,
-        							"width": 850
+        						zingchart.exec('chart8', 'setdata', {
+        							data : myConfig2
         						});
         					})
         				</script>
@@ -229,8 +240,16 @@
 
         			<td ng-controller='DonutCtrl' id="chart_d">
         				<script>
+        					var myConfig3 = {};
+        					zingchart.render({
+        						"id": 'chart_d',
+        						"data": myConfig3,
+        						"height": 500,
+        						"width": 800
+        					});
+
         					donutChart(function(visit1, visit2, visit3){
-        						var myConfig = {
+        						var myConfig3 = {
         							"background-color": "#454754",
         							"type": "pie",
         							"width": "90%",
@@ -267,12 +286,8 @@
         								"text": "3회이상 관람"
         							}]
         						};
-
-        						zingchart.render({
-        							"id": 'chart_d',
-        							"data": myConfig,
-        							"height": 500,
-        							"width": 800
+        						zingchart.exec('chart_d', 'setdata', {
+        							data : myConfig3
         						});
         					})
         				</script>
@@ -284,23 +299,23 @@
         <script>
         	app.controller('MyCtrl', function ($scope, $http, $interval){
         		$interval(function(){
-        		$http.get('/faces')
-        		.success(function (number){
-        			$scope.faces = number
-        		})
-        		$http.get('/totalPeople')
-        		.success(function (number2){
-        			$scope.total = number2
-        			if(number2.length > 0){
-        				var sum = 0;
-        				for(var i=0; i<number2.length; i++)
-        					sum += number2[i].stayTime;
-        				$scope.stayAvg = (sum/number2.length).toFixed(1);
-        			}
-        			else
-        				$scope.stayAvg = 0;
-        		})
-        	},1000)
+        			$http.get('/faces')
+        			.success(function (number){
+        				$scope.faces = number
+        			})
+        			$http.get('/totalPeople')
+        			.success(function (number2){
+        				$scope.total = number2
+        				if(number2.length > 0){
+        					var sum = 0;
+        					for(var i=0; i<number2.length; i++)
+        						sum += number2[i].stayTime;
+        					$scope.stayAvg = (sum/number2.length).toFixed(1);
+        				}
+        				else
+        					$scope.stayAvg = 0;
+        			})
+        		},1000)
         	})
         </script>
         <script>
@@ -326,5 +341,6 @@
 		setTimeout(function(){nowDate()},60000);
 	}
 </script>
+</div>
 </body>
 </html>

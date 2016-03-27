@@ -2,10 +2,6 @@ var app = angular.module('app', []);
 
 function lineChart(callback){
 	var initMin;
-	var people5=[];
-	var people10=[];
-	var people15=[];
-	var people20=[];
 	var labels=[];
 
 	app.controller('LineCtrl', function ($http){
@@ -46,67 +42,73 @@ function lineChart(callback){
 					});
 				});
 			});
-			$http.get('/time/stay/'+initHour+'/'+initMin+'/0')
-			.success(function (record){
-				people5.push(record.data5);
-				people10.push(record.data10);
-				people15.push(record.data15);
-				people20.push(record.data20);
-				$http.get('/time/stay/'+initHour+'/'+initMin+'/1')
+			setInterval(function(){
+				var people5=[];
+				var people10=[];
+				var people15=[];
+				var people20=[];
+				$http.get('/time/stay/'+initHour+'/'+initMin+'/0')
 				.success(function (record){
 					people5.push(record.data5);
 					people10.push(record.data10);
 					people15.push(record.data15);
 					people20.push(record.data20);
-					$http.get('/time/stay/'+initHour+'/'+initMin+'/2')
+					$http.get('/time/stay/'+initHour+'/'+initMin+'/1')
 					.success(function (record){
 						people5.push(record.data5);
 						people10.push(record.data10);
 						people15.push(record.data15);
 						people20.push(record.data20);
-						$http.get('/time/stay/'+initHour+'/'+initMin+'/3')
+						$http.get('/time/stay/'+initHour+'/'+initMin+'/2')
 						.success(function (record){
 							people5.push(record.data5);
 							people10.push(record.data10);
 							people15.push(record.data15);
 							people20.push(record.data20);
-							$http.get('/time/stay/'+initHour+'/'+initMin+'/4')
+							$http.get('/time/stay/'+initHour+'/'+initMin+'/3')
 							.success(function (record){
 								people5.push(record.data5);
 								people10.push(record.data10);
 								people15.push(record.data15);
 								people20.push(record.data20);
-								$http.get('/time/stay/'+initHour+'/'+initMin+'/5')
+								$http.get('/time/stay/'+initHour+'/'+initMin+'/4')
 								.success(function (record){
 									people5.push(record.data5);
 									people10.push(record.data10);
 									people15.push(record.data15);
 									people20.push(record.data20);
-									$http.get('/time/stay/'+initHour+'/'+initMin+'/6')
+									$http.get('/time/stay/'+initHour+'/'+initMin+'/5')
 									.success(function (record){
 										people5.push(record.data5);
 										people10.push(record.data10);
 										people15.push(record.data15);
 										people20.push(record.data20);
-										$http.get('/time/stay/'+initHour+'/'+initMin+'/7')
+										$http.get('/time/stay/'+initHour+'/'+initMin+'/6')
 										.success(function (record){
 											people5.push(record.data5);
 											people10.push(record.data10);
 											people15.push(record.data15);
 											people20.push(record.data20);
-											$http.get('/time/stay/'+initHour+'/'+initMin+'/8')
+											$http.get('/time/stay/'+initHour+'/'+initMin+'/7')
 											.success(function (record){
 												people5.push(record.data5);
 												people10.push(record.data10);
 												people15.push(record.data15);
 												people20.push(record.data20);
-												$http.get('/time/stay/'+initHour+'/'+initMin+'/9')
+												$http.get('/time/stay/'+initHour+'/'+initMin+'/8')
 												.success(function (record){
 													people5.push(record.data5);
 													people10.push(record.data10);
 													people15.push(record.data15);
 													people20.push(record.data20);
-													callback(people5,people10,people15,people20, labels);
+													$http.get('/time/stay/'+initHour+'/'+initMin+'/9')
+													.success(function (record){
+														people5.push(record.data5);
+														people10.push(record.data10);
+														people15.push(record.data15);
+														people20.push(record.data20);
+														callback(people5,people10,people15,people20, labels);
+													});
 												});
 											});
 										});
@@ -116,7 +118,7 @@ function lineChart(callback){
 						});
 					});
 				});
-			});
+			},500);
 		});
 	});
 }
